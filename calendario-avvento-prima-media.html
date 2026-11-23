@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Calendario dell’Avvento · Religione, classe prima</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f6efe3; --bg2:#ece0cc; --ink:#2a2140; --ink2:#5b5072;
+  --card:#fffaf1; --line:#d8c9ae; --accent:#b4531f; --flame:#f59a1b;
+  --wax-a:#6d4fa3; --wax-b:#8c70c2; --wax-rose-a:#c4577f; --wax-rose-b:#e07fa0;
+  --song:#2f7d6b; --video:#b4531f; --game:#3f5fb5; --ok:#2f7d4f; --ko:#b23b3b;
+  --glow:rgba(245,154,27,.35); --shadow:rgba(42,33,64,.18);
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#171a38; --bg2:#222654; --ink:#f4ecdc; --ink2:#b9b3d1;
+    --card:#232851; --line:#3a4080; --accent:#ffb55e; --flame:#ffc247;
+    --wax-a:#7a5cb4; --wax-b:#a48ae0; --wax-rose-a:#d0658d; --wax-rose-b:#f08fb0;
+    --song:#6fd0b6; --video:#ffb55e; --game:#8fa8ff; --ok:#7fdca2; --ko:#ff8f8f;
+    --glow:rgba(255,194,71,.4); --shadow:rgba(0,0,0,.45);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#171a38; --bg2:#222654; --ink:#f4ecdc; --ink2:#b9b3d1;
+  --card:#232851; --line:#3a4080; --accent:#ffb55e; --flame:#ffc247;
+  --wax-a:#7a5cb4; --wax-b:#a48ae0; --wax-rose-a:#d0658d; --wax-rose-b:#f08fb0;
+  --song:#6fd0b6; --video:#ffb55e; --game:#8fa8ff; --ok:#7fdca2; --ko:#ff8f8f;
+  --glow:rgba(255,194,71,.4); --shadow:rgba(0,0,0,.45);
+  color-scheme:dark;
+}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif;font-size:17px;line-height:1.55;
+  background-image:radial-gradient(ellipse at 50% -10%,var(--bg2),transparent 60%);min-height:100vh}
+h1,h2,h3{font-family:"Fraunces",Georgia,"Times New Roman",serif;line-height:1.15;margin:0}
+.wrap{max-width:1040px;margin:0 auto;padding:28px 18px 60px}
+
+header{text-align:center;padding:18px 0 8px}
+header h1{font-size:clamp(2rem,6vw,3.4rem);font-weight:800;letter-spacing:-.01em}
+header p{max-width:60ch;margin:12px auto 0;color:var(--ink2)}
+.bar{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:center;margin:20px 0 6px;font-size:.92rem;color:var(--ink2)}
+.legend{display:flex;gap:14px;flex-wrap:wrap;justify-content:center}
+.tag{display:inline-flex;align-items:center;gap:6px;font-weight:700}
+.dot{width:.8em;height:.8em;border-radius:50%;display:inline-block}
+.progress{font-weight:700;color:var(--ink)}
+.tools{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+button.ghost{font:inherit;font-size:.88rem;font-weight:700;color:var(--ink);background:transparent;border:1.5px solid var(--line);border-radius:999px;padding:6px 14px;cursor:pointer}
+button.ghost:hover{border-color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:6px}
+
+.weeks{margin-top:26px;display:grid;gap:30px}
+.week h2{font-size:1.15rem;font-weight:600;margin:0 0 4px 4px}
+.week .sub{font-size:.9rem;color:var(--ink2);margin:0 0 6px 4px}
+.shelf{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:6px 8px;align-items:end;padding:20px 8px 14px;border-bottom:6px solid var(--line);border-radius:0 0 6px 6px}
+.candle{all:unset;box-sizing:border-box;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding:0 4px;position:relative}
+.candle:focus-visible{outline:3px solid var(--accent);outline-offset:4px;border-radius:10px}
+.flame{width:18px;height:30px;margin-bottom:-2px;position:relative;opacity:0;transform:scale(.3);transform-origin:50% 100%;transition:opacity .4s,transform .4s}
+.flame::before{content:"";position:absolute;inset:0;border-radius:50% 50% 50% 50%/62% 62% 38% 38%;background:radial-gradient(circle at 50% 70%,#fff6c9 0 22%,var(--flame) 55%,#e9560f 100%);box-shadow:0 0 22px 8px var(--glow)}
+.wick{width:3px;height:9px;background:#3b2f2a;border-radius:2px}
+.wax{width:46px;border-radius:6px 6px 4px 4px;background:linear-gradient(90deg,var(--wax-a),var(--wax-b) 45%,var(--wax-a));color:#fff;font-family:"Fraunces",Georgia,serif;font-weight:800;font-size:1.25rem;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:8px;box-shadow:inset 0 3px 0 rgba(255,255,255,.28),0 6px 10px -4px var(--shadow);transition:transform .2s}
+.candle:hover .wax{transform:translateY(-3px)}
+.wax small{font-family:"Nunito",sans-serif;font-size:.8rem;font-weight:700;margin-top:auto;padding-bottom:6px;opacity:.95}
+.rose .wax{background:linear-gradient(90deg,var(--wax-rose-a),var(--wax-rose-b) 45%,var(--wax-rose-a))}
+.candle.lit .flame{opacity:1;transform:scale(1);animation:flick 2.4s ease-in-out infinite}
+.candle.lit .wax{box-shadow:inset 0 3px 0 rgba(255,255,255,.4),0 0 26px -2px var(--glow),0 6px 10px -4px var(--shadow)}
+.candle .kind{position:absolute;bottom:-1px;font-size:.7rem}
+@keyframes flick{0%,100%{transform:scale(1) rotate(-1.5deg)}50%{transform:scale(1.06,.96) rotate(1.5deg)}}
+@media (prefers-reduced-motion: reduce){.candle.lit .flame{animation:none}.flame,.wax{transition:none}}
+
+.overlay{position:fixed;inset:0;background:rgba(10,8,30,.62);display:none;align-items:flex-end;justify-content:center;z-index:50;padding:0}
+.overlay.on{display:flex}
+.sheet{background:var(--card);color:var(--ink);width:100%;max-width:720px;max-height:92vh;overflow:auto;border-radius:22px 22px 0 0;padding:22px 22px calc(28px + env(safe-area-inset-bottom,0px));position:relative;box-shadow:0 -10px 40px var(--shadow);animation:rise .28s ease-out}
+@keyframes rise{from{transform:translateY(40px);opacity:0}to{transform:none;opacity:1}}
+@media (min-width:760px){.overlay{align-items:center;padding:24px}.sheet{border-radius:22px}}
+@media (prefers-reduced-motion: reduce){.sheet{animation:none}}
+.sheet .top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.daynum{font-family:"Fraunces",Georgia,serif;font-weight:800;font-size:.95rem;color:var(--accent)}
+.sheet h2{font-size:1.65rem;margin:2px 0 4px}
+.theme{color:var(--ink2);font-size:.95rem;margin:0 0 14px}
+.close{font:inherit;font-size:1.4rem;line-height:1;width:40px;height:40px;border-radius:50%;border:1.5px solid var(--line);background:transparent;color:var(--ink);cursor:pointer;flex:none}
+.word{border-left:4px solid var(--flame);padding:4px 0 4px 14px;margin:0 0 16px;font-family:"Fraunces",Georgia,serif;font-size:1.15rem}
+.word span{display:block;font-family:"Nunito",sans-serif;font-size:.85rem;color:var(--ink2);margin-top:2px}
+.block{margin:0 0 18px}
+.block h3{font-size:1.05rem;margin-bottom:6px}
+.block p{margin:0 0 8px;max-width:68ch}
+.meta{font-size:.85rem;color:var(--ink2)}
+.extra{border:2px solid var(--line);border-radius:16px;padding:14px 16px;background:var(--bg)}
+.extra.song{border-color:var(--song)}.extra.video{border-color:var(--video)}.extra.game{border-color:var(--game)}
+.extra h3 .tag{font-size:.95rem}
+a.link{display:inline-block;margin:4px 8px 4px 0;padding:7px 14px;border-radius:999px;background:var(--ink);color:var(--bg);font-weight:700;font-size:.9rem;text-decoration:none}
+a.link:hover{background:var(--accent);color:#fff}
+.q{margin:12px 0}
+.q p{font-weight:700;margin-bottom:6px}
+.opts{display:grid;gap:7px}
+.opt{font:inherit;text-align:left;padding:10px 14px;border-radius:12px;border:2px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.opt:hover:not([disabled]){border-color:var(--game)}
+.opt.right{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 16%,var(--card))}
+.opt.wrong{border-color:var(--ko);background:color-mix(in srgb,var(--ko) 14%,var(--card))}
+.why{font-size:.92rem;color:var(--ink2);margin-top:6px;display:none}
+.why.on{display:block}
+.tiles{display:flex;gap:6px;flex-wrap:wrap;margin:6px 0 8px}
+.tile{width:40px;height:44px;border-radius:9px;background:var(--game);color:#fff;font-family:"Fraunces",Georgia,serif;font-weight:800;font-size:1.3rem;display:flex;align-items:center;justify-content:center}
+.scr{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.scr input{font:inherit;padding:9px 12px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);width:min(230px,100%);text-transform:uppercase}
+.scr button,.nav button{font:inherit;font-weight:700;padding:9px 16px;border-radius:10px;border:0;background:var(--game);color:#fff;cursor:pointer}
+.fb{font-weight:700;margin-left:2px}
+.fb.ok{color:var(--ok)}.fb.ko{color:var(--ko)}
+.score{font-weight:700;margin-top:10px}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:20px}
+.nav button.sec{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.nav button[disabled]{opacity:.35;cursor:default}
+.note{max-width:70ch;margin:34px auto 0;padding:16px 18px;border:1.5px dashed var(--line);border-radius:14px;color:var(--ink2);font-size:.92rem}
+.note strong{color:var(--ink)}
+@media print{.overlay,.tools{display:none!important}body{background:#fff}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Calendario dell’Avvento</h1>
+  <p>Religione · classe prima della scuola secondaria di primo grado. Ventiquattro candele, ventiquattro scoperte: ogni giorno un’attività da fare in classe, più una canzone, un video o un gioco.</p>
+  <div class="bar">
+    <div class="legend" aria-label="Legenda">
+      <span class="tag"><span class="dot" style="background:var(--song)"></span>Canzone</span>
+      <span class="tag"><span class="dot" style="background:var(--video)"></span>Video con testimoni</span>
+      <span class="tag"><span class="dot" style="background:var(--game)"></span>Gioco interattivo</span>
+    </div>
+    <span class="progress" id="prog" aria-live="polite"></span>
+  </div>
+  <div class="tools">
+    <button class="ghost" id="resetBtn" type="button">Spegni tutte le candele</button>
+    <button class="ghost" id="themeBtn" type="button">Cambia tema chiaro/scuro</button>
+  </div>
+</header>
+
+<div class="weeks" id="weeks"></div>
+
+<div class="note">
+  <strong>Per l’insegnante.</strong> Le candele si possono aprire in qualsiasi ordine, ma l’idea è una al giorno (1–24 dicembre; il 13 dicembre 2026 è la domenica Gaudete e santa Lucia). I pulsanti di canzoni e video aprono una <strong>ricerca su YouTube</strong>, non un link diretto: scegliete voi la versione più adatta e guardatela prima in anteprima. Verificate anche i testi delle canzoni prima dell’ascolto in classe.
+</div>
+</div>
+
+<div class="overlay" id="ov" role="dialog" aria-modal="true" aria-labelledby="sTitle">
+  <div class="sheet" id="sheet"></div>
+</div>
+
+<script>
+const yt = q => "https://www.youtube.com/results?search_query=" + encodeURIComponent(q);
+
+const D = [
+{n:1,t:`Che cosa aspetto?`,tema:`Attesa · Prima domenica di Avvento`,parola:[`«Vegliate»`,`Marco 13,37`],tempo:`20 min`,
+ att:`Ogni alunno disegna su un foglietto una fiammella e scrive dentro qualcosa che aspetta (dalla cosa più piccola alla più grande). Le fiammelle vanno sul cartellone dell’«albero delle attese». Poi si parla: aspettare è tempo perso o tempo che prepara? Si accende la candela (o il lumino LED) della classe, che resterà lì fino a Natale.`,
+ x:{k:"song",artista:`Jovanotti`,titolo:`Mi fido di te`,spunto:`Si può aspettare con paura o con fiducia. Ascolta il brano e cerca la parola o la frase che per te dice «fiducia».`,dom:`Di chi ti fidi quando non sai come andrà a finire?`}},
+{n:2,t:`Parole dell’Avvento`,tema:`Il significato del tempo che inizia`,parola:[`«Adventus»: arrivo`,`dal latino`],tempo:`15 min`,
+ att:`Si scrive alla lavagna la parola «Avvento» e si chiede alla classe che cosa evoca. Poi si scopre il significato e i segni di questo tempo: corona, candele, colore viola, quattro domeniche. Ogni gruppo disegna un segno e spiega che cosa vuole dire con parole sue.`,
+ x:{k:"game",type:"quiz",titolo:`Quiz lampo sull’Avvento`,items:[
+  {q:`«Avvento» viene dal latino «adventus». Che cosa significa?`,o:[`Partenza`,`Arrivo`,`Silenzio`,`Festa`],a:1,w:`Adventus vuol dire «venuta, arrivo»: l’Avvento prepara l’arrivo di Gesù.`},
+  {q:`Quante domeniche ha il tempo di Avvento?`,o:[`Due`,`Tre`,`Quattro`,`Cinque`],a:2,w:`Sono quattro, e ogni domenica si accende una candela della corona.`},
+  {q:`Di che colore è il paramento del sacerdote in Avvento?`,o:[`Rosso`,`Viola`,`Verde`,`Bianco`],a:1,w:`Il viola è il colore dell’attesa e della conversione. La terza domenica (Gaudete) si può usare il rosa, colore della gioia.`}]}},
+{n:3,t:`Connessi con il Cielo`,tema:`Carlo Acutis, un ragazzo e il suo computer`,parola:[`«Essere sempre unito a Gesù»`,`frase attribuita a Carlo Acutis`],tempo:`25 min`,
+ att:`Prima del video ognuno stima quante ore al giorno passa online. Dopo il video, si parla di Carlo: un adolescente appassionato di informatica, morto a 15 anni nel 2006 e proclamato santo nel 2025. Sfida del giorno: scegliere un gesto buono da fare con il telefono o il computer (un messaggio gentile, una foto condivisa con permesso, una pausa dagli schermi).`,
+ x:{k:"video",desc:`Un racconto di Carlo Acutis fatto per ragazzi, oppure testimonianze di giovani pellegrini che hanno partecipato alla canonizzazione e al Giubileo dei giovani del 2025. Cerca contenuti brevi (3–6 minuti).`,cerca:[`Carlo Acutis la sua storia raccontata ai ragazzi`,`Giubileo dei giovani 2025 testimonianze ragazzi`],nota:`Chiedi alla classe: che cosa ti ha colpito di più di un ragazzo che ha la tua stessa età?`}},
+{n:4,t:`Cantiere aperto`,tema:`Preparare la strada · Giovanni Battista`,parola:[`«Preparate la via del Signore»`,`Luca 3,4`],tempo:`25 min`,
+ att:`La classe diventa un cantiere. In squadre si disegna una strada piena di ostacoli (rancore, pigrizia, bugie, indifferenza). Per ogni ostacolo si scrive l’attrezzo per toglierlo: chiedere scusa, aiutare, ascoltare, dire la verità. Le strade si attaccano in fila: la «via dell’Avvento» di tutta la classe.`,
+ x:{k:"song",artista:`Niccolò Fabi`,titolo:`Costruire`,spunto:`Il brano parla di costruire qualcosa con pazienza. Ascoltalo pensando alla strada che hai disegnato.`,dom:`Che cosa vale la pena «costruire» in classe, quest’anno?`}},
+{n:5,t:`Il profeta che vede lontano`,tema:`Isaia e le promesse`,parola:[`«Ecco, la vergine concepirà e darà alla luce un figlio, e lo chiamerà Emmanuele»`,`Isaia 7,14`],tempo:`25 min`,
+ att:`I profeti non sono indovini: sono persone che aiutano a capire dove Dio sta guidando. Ogni gruppo legge un brano (Isaia 9,1-6; Isaia 11,1-9; Michea 5,1-4) e lo trasforma in un «post» di massimo 140 caratteri. Si leggono ad alta voce e si cerca che cosa hanno in comune: speranza.`,
+ x:{k:"game",type:"quiz",titolo:`Quiz sulle promesse`,items:[
+  {q:`Come si chiamerà il bambino annunciato da Isaia?`,o:[`Emmanuele`,`Giosuè`,`Davide`,`Salomone`],a:0,w:`Emmanuele significa «Dio con noi».`},
+  {q:`Secondo il profeta Michea, in quale città nascerà il futuro re?`,o:[`Gerusalemme`,`Nazaret`,`Betlemme`,`Gerico`],a:2,w:`Michea 5,1: da Betlemme uscirà «colui che dominerà in Israele».`},
+  {q:`Che cosa fa un profeta, nella Bibbia?`,o:[`Prevede il futuro come un indovino`,`Parla a nome di Dio e invita a cambiare`,`Comanda gli eserciti`,`Scrive le leggi dello Stato`],a:1,w:`Il profeta è una «voce» di Dio: richiama, consola e fa sperare.`}]}},
+{n:6,t:`Il regalo senza firma`,tema:`San Nicola e la generosità nascosta · 6 dicembre`,parola:[`«Non sappia la tua sinistra ciò che fa la tua destra»`,`Matteo 6,3`],tempo:`20 min`,
+ att:`Si racconta la storia di san Nicola di Bari, che secondo la tradizione aiutò di nascosto una famiglia povera. Poi parte il «Babbo Natale segreto»: ogni alunno pesca un nome e fino al 24 dicembre fa gesti gentili anonimi (un disegno, un aiuto, un biglietto). Niente soldi: contano le idee.`,
+ x:{k:"video",desc:`Servizi o brevi video in cui ragazzi e giovani raccontano la loro esperienza di volontariato (raccolta alimentare, doposcuola, scout). Cerca testimonianze di chi ha 14–20 anni, non adulti che parlano dei giovani.`,cerca:[`ragazzi volontari raccolta alimentare testimonianza`,`giovani scout servizio testimonianza`,`san Nicola di Bari storia per ragazzi`],nota:`Chiedi: che differenza c’è tra «fare una buona azione» e «fare una buona azione per essere visti»?`}},
+{n:7,t:`Il più piccolo è il più grande`,tema:`Dio sceglie ciò che è fragile`,parola:[`«Chi tra voi è il più piccolo, questi è grande»`,`Luca 9,48`],tempo:`20 min`,
+ att:`Dio sceglie di nascere piccolo e in una famiglia semplice. Ognuno scrive una qualità che gli sembra «debole» (timidezza, sensibilità, lentezza) e prova a trovare con un compagno il lato in cui diventa una forza. Le carte si mettono in una scatola e se ne pesca una a caso per leggerla insieme.`,
+ x:{k:"song",artista:`Lucio Corsi`,titolo:`Volevo essere un duro`,spunto:`Presentata a Sanremo 2025, parla di non sentirsi all’altezza e di accettarsi per quello che si è. Ascolta e nota che cosa «volevo essere» e che cosa si è invece.`,dom:`Nel presepe Dio non arriva con la forza. Che cosa cambia nel modo di pensare alla forza?`}},
+{n:8,t:`Un sì che cambia la storia`,tema:`Maria e l’Annunciazione · Immacolata Concezione`,parola:[`«Eccomi, avvenga per me secondo la tua parola»`,`Luca 1,38`],tempo:`25 min`,
+ att:`Si legge Luca 1,26-38. A gruppi si disegna l’Annunciazione in quattro vignette a fumetto: l’arrivo dell’angelo, la paura, la domanda di Maria, la risposta. Poi ognuno completa la frase: «Una volta ho detto di sì a qualcosa di difficile e…». Si ricorda che oggi la Chiesa festeggia l’Immacolata: Maria, scelta da Dio fin dall’inizio.`,
+ x:{k:"game",type:"quiz",titolo:`Quiz sull’Annunciazione`,items:[
+  {q:`Come si chiama l’angelo che porta l’annuncio a Maria?`,o:[`Michele`,`Raffaele`,`Gabriele`,`Uriele`],a:2,w:`Gabriele significa «forza di Dio».`},
+  {q:`In quale villaggio vive Maria?`,o:[`Nazaret`,`Betlemme`,`Cafarnao`,`Gerico`],a:0,w:`Nazaret, in Galilea, un paese piccolo e poco importante.`},
+  {q:`Che cosa dice l’angelo per prima cosa a Maria?`,o:[`«Sei in pericolo»`,`«Rallegrati, piena di grazia»`,`«Parti subito»`,`«Fai silenzio»`],a:1,w:`Il saluto inizia con la gioia: «Rallegrati, piena di grazia, il Signore è con te».`}]}},
+{n:9,t:`Una luce a 18 anni`,tema:`Chiara Luce Badano, giovane testimone`,parola:[`«Se tu lo vuoi, Gesù, lo voglio anch’io»`,`frase attribuita a Chiara Luce Badano`],tempo:`25 min`,
+ att:`Chiara Badano (1971–1990), sportiva e amante della musica, si ammalò a 17 anni. Rimase serena e luminosa fino alla fine, tanto che fu chiamata «Luce». Dopo il video, ognuno scrive una breve lettera a un coetaneo (reale o immaginario) che sta vivendo un momento difficile, con una frase di vicinanza vera, senza «paroloni».`,
+ x:{k:"video",desc:`Testimonianze di amici, coetanei e giovani che oggi parlano di Chiara Luce (beatificata nel 2010), oppure interviste a ragazzi che hanno vissuto la malattia o un momento difficile con speranza. Meglio video brevi e sobri.`,cerca:[`Chiara Luce Badano video per ragazzi`,`Chiara Luce Badano testimonianza amici`],nota:`Ricorda di guardare il video prima in anteprima: il tema della malattia va introdotto con delicatezza.`}},
+{n:10,t:`Siamo tutti esseri umani`,tema:`Il prossimo · il buon samaritano`,parola:[`«Chi è stato il prossimo?» «Colui che ha avuto compassione»`,`Luca 10,36-37`],tempo:`25 min`,
+ att:`Si legge la parabola del buon samaritano e si mette in scena in tre minuti con i ruoli: viandante, briganti, sacerdote, levita, samaritano, locandiere. Poi la domanda cambia: non «chi è il mio prossimo?» ma «di chi posso farmi prossimo oggi?». Ognuno scrive un nome e un gesto concreto.`,
+ x:{k:"song",artista:`Marco Mengoni`,titolo:`Esseri umani`,spunto:`Un brano sul bisogno di non essere soli e di riconoscersi simili agli altri. Ascolta una volta senza testo, poi con il testo davanti.`,dom:`Quale frase ti sembra la più vicina alla parabola del samaritano?`}},
+{n:11,t:`L’uomo che non parla (ma fa)`,tema:`San Giuseppe`,parola:[`«Giuseppe… prese con sé la sua sposa»`,`Matteo 1,24`],tempo:`15 min`,
+ att:`Nei Vangeli Giuseppe non pronuncia nemmeno una parola, eppure è decisivo. Due minuti di silenzio in classe con la candela accesa. Poi ognuno scrive: «Quando ho fatto qualcosa di importante senza dire niente…». Si riflette su quanto contino i fatti rispetto alle parole.`,
+ x:{k:"game",type:"tf",titolo:`Vero o falso su Giuseppe`,items:[
+  {q:`Giuseppe era un falegname (carpentiere).`,a:true,w:`Vero: i Vangeli parlano di «figlio del falegname» (Matteo 13,55).`},
+  {q:`Nei Vangeli Giuseppe pronuncia molte frasi.`,a:false,w:`Falso: non è riportata nessuna sua parola.`},
+  {q:`Un angelo parla a Giuseppe in sogno.`,a:true,w:`Vero: gli dice di non temere di prendere Maria con sé.`},
+  {q:`Giuseppe è nato a Betlemme e ha sempre vissuto lì.`,a:false,w:`Falso: viveva a Nazaret e va a Betlemme per il censimento.`}]}},
+{n:12,t:`Costruttori di pace`,tema:`Giovani e pace oggi`,parola:[`«Beati gli operatori di pace»`,`Matteo 5,9`],tempo:`25 min`,
+ att:`Ogni alunno piega una colomba di carta (origami o semplice sagoma) e scrive un impegno di pace concreto: a casa, in classe, in rete, nello sport. Le colombe si appendono sul filo della classe. Dopo il video, la classe sceglie un impegno comune per le due settimane prima di Natale.`,
+ x:{k:"video",desc:`Testimonianze di ragazzi e giovani che lavorano per la pace: scuole della pace, esperienze di dialogo tra culture, giovani di zone di conflitto che raccontano la loro speranza. Scegli contenuti con voci vere, non solo commenti di adulti.`,cerca:[`Scuola della pace Sant’Egidio ragazzi testimonianze`,`giovani costruttori di pace testimonianza`,`ragazzi dialogo interreligioso testimonianza`],nota:`Chiedi: la pace comincia dai grandi o da noi? Che differenza c’è tra «non litigare» e «fare pace»?`}},
+{n:13,t:`Rosa e luce`,tema:`Domenica Gaudete e santa Lucia`,parola:[`«Rallegratevi sempre nel Signore»`,`Filippesi 4,4`],tempo:`20 min`,rose:true,
+ att:`Si accende la candela rosa: è la terza domenica, quella della gioia. Ognuno scrive su un cartoncino giallo «una gioia piccola che non costa niente» e le mette in un barattolo. Si ricorda anche santa Lucia (il nome viene da «luce»): luci spente, un ascolto in penombra e una domanda: chi è stata una luce per te questa settimana?`,
+ x:{k:"song",artista:`Jovanotti`,titolo:`Il più grande spettacolo dopo il Big Bang`,spunto:`Un inno allo stupore per essere al mondo. Ascolta e segna una parola che dice «meraviglia».`,dom:`Che cosa ti fa dire «che bello!» senza che nessuno te lo chieda?`}},
+{n:14,t:`I nomi di Gesù`,tema:`Chi è il bambino che sta per nascere?`,parola:[`«Gli darai il nome di Gesù»`,`Luca 1,31`],tempo:`20 min`,
+ att:`Nella Bibbia Gesù ha molti nomi e titoli. Dopo il gioco, la classe prepara il «documento d’identità di Gesù»: nome, luogo di nascita, famiglia, soprannomi e significato di ciascuno. Ogni gruppo ne illustra uno in un poster da appendere accanto al presepe.`,
+ x:{k:"game",type:"scr",titolo:`Parole in disordine`,items:[
+  {w:`MESSIA`,h:`Significa «l’Unto», il consacrato da Dio.`},
+  {w:`EMMANUELE`,h:`Il nome annunciato da Isaia: «Dio con noi».`},
+  {w:`SALVATORE`,h:`Colui che salva, come dice il nome Gesù.`},
+  {w:`MAESTRO`,h:`Così lo chiamano i discepoli.`}]}},
+{n:15,t:`La gioia di servire`,tema:`Giovani che trovano gioia donando tempo`,parola:[`«Vi è più gioia nel dare che nel ricevere»`,`Atti 20,35`],tempo:`25 min`,
+ att:`Compito di ricerca: ogni alunno intervista una persona che gli sembra felice e le chiede «Che cosa ti rende felice?». Si raccolgono le risposte. Dopo il video, la classe cerca se la gioia nasce più spesso dal ricevere o dal donare e propone un piccolo gesto di servizio per la scuola.`,
+ x:{k:"video",desc:`Brevi video di adolescenti che fanno servizio: case di riposo, oratori, clown di corsia, doposcuola. Cerca testimonianze di chi ha tra i 14 e i 25 anni che racconta che cosa ha ricevuto.`,cerca:[`giovani volontari casa di riposo testimonianza`,`ragazzi animatori oratorio servizio testimonianza`,`giovani clown di corsia volontari`],nota:`Chiedi: quale servizio potremmo fare noi, a scuola o nel quartiere, prima di Natale?`}},
+{n:16,t:`Abbi cura`,tema:`Inizia la novena di Natale`,parola:[`«Ero malato e mi avete visitato»`,`Matteo 25,36`],tempo:`20 min`,
+ att:`Da oggi al 24 dicembre molte comunità vivono la novena di Natale. In classe si introduce un minuto di preghiera quotidiana: una candela, una parola scritta alla lavagna, un’intenzione. Oggi l’intenzione è la cura: ognuno scrive su un bigliettino una persona di cui vuole prendersi cura in questi giorni e il gesto che farà.`,
+ x:{k:"song",artista:`Simone Cristicchi`,titolo:`Abbi cura di me`,spunto:`Una canzone che chiede cura e la offre. Ascolta con gli occhi chiusi e ripeti mentalmente un nome.`,dom:`Qual è la differenza tra «aiutare» e «prendersi cura»?`}},
+{n:17,t:`L’albero genealogico di Gesù`,tema:`Una storia dentro altre storie`,parola:[`«Genealogia di Gesù Cristo, figlio di Davide»`,`Matteo 1,1`],tempo:`25 min`,
+ att:`Matteo apre il suo Vangelo con un elenco di nomi. Ognuno disegna il proprio albero con tre generazioni (genitori, nonni, bisnonni se si conoscono) e scrive una storia curiosa raccolta a casa. Scopriamo che la fede si tramanda attraverso persone reali, con pregi e difetti.`,
+ x:{k:"game",type:"tf",titolo:`Vero o falso sulla genealogia`,items:[
+  {q:`Matteo inizia il suo Vangelo con l’elenco degli antenati di Gesù.`,a:true,w:`Vero: Matteo 1,1-17.`},
+  {q:`Tra gli antenati di Gesù ci sono solo persone perfette.`,a:false,w:`Falso: ci sono persone con errori e storie complicate. Dio ama passare dalle storie vere.`},
+  {q:`Il re Davide è un antenato di Gesù.`,a:true,w:`Vero: Gesù è chiamato «figlio di Davide».`},
+  {q:`Gesù nasce a Betlemme, la città di Davide.`,a:true,w:`Vero: Luca 2,4.`}]}},
+{n:18,t:`In fuga con una valigia`,tema:`La fuga in Egitto e chi lascia la propria casa`,parola:[`«Alzati, prendi con te il bambino e sua madre e fuggi in Egitto»`,`Matteo 2,13`],tempo:`25 min`,
+ att:`Gioco di immaginazione: hai dieci minuti per lasciare casa e puoi portare solo cinque oggetti. Scegli e confronta. Si legge poi Matteo 2,13-15: la famiglia di Gesù diventa rifugiata. Chi lascia casa oggi non è «uno straniero», è una persona con una storia. Ogni gruppo propone un gesto di accoglienza.`,
+ x:{k:"video",desc:`Testimonianze di ragazzi e giovani con esperienza di migrazione e accoglienza, oppure racconti di classi che hanno accolto compagni da altri Paesi. Scegli video adatti a 11-12 anni, con tono rispettoso e senza immagini crude.`,cerca:[`corridoi umanitari giovani testimonianza`,`ragazzo straniero a scuola racconta la sua storia`,`classe accoglie compagno arrivato da lontano`],nota:`Chiedi: che cosa vorresti trovare tu, se arrivassi in una scuola dove nessuno ti conosce?`}},
+{n:19,t:`Colonna sonora dell’Avvento`,tema:`Speranza che si canta`,parola:[`«Cantate al Signore un canto nuovo»`,`Salmo 98,1`],tempo:`25 min`,
+ att:`Ogni gruppo propone una canzone che dice «speranza» o «attesa», spiega perché e legge due versi (testi adatti all’età). La classe vota la «colonna sonora di dicembre» e la ascolta a fine giornata. L’obiettivo è imparare che la musica può diventare preghiera.`,
+ x:{k:"song",artista:`Max Gazzè`,titolo:`Una musica può fare`,spunto:`Un brano sul potere della musica di ricostruire e consolare. Ascoltalo e segna dove senti la speranza.`,dom:`Che musica ti aiuta quando sei triste o quando aspetti qualcosa?`}},
+{n:20,t:`Il presepe di classe`,tema:`Francesco a Greccio e i personaggi della grotta`,parola:[`«Un bambino avvolto in fasce, deposto in una mangiatoia»`,`Luca 2,12`],tempo:`30 min`,
+ att:`Si prepara il presepe della classe con cartoncini. Ognuno sceglie un personaggio (pastore, Magio, locandiere, Maria, Giuseppe, un animale) e scrive in prima persona che cosa pensa guardando il Bambino. Poi si conoscono le origini: il primo presepe vivente fu realizzato da san Francesco a Greccio nel 1223.`,
+ x:{k:"game",type:"tf",titolo:`Vero o falso sul presepe`,items:[
+  {q:`Il primo presepe vivente fu organizzato da san Francesco a Greccio.`,a:true,w:`Vero, nel 1223, per far «vedere» la povertà di Betlemme.`},
+  {q:`Il bue e l’asinello sono nominati nel Vangelo di Luca.`,a:false,w:`Falso: nascono dalla tradizione e da un testo di Isaia (1,3).`},
+  {q:`I pastori sono raccontati nel Vangelo di Luca.`,a:true,w:`Vero: sono i primi destinatari dell’annuncio (Luca 2,8-20).`},
+  {q:`I Magi sono raccontati nel Vangelo di Luca.`,a:false,w:`Falso: compaiono nel Vangelo di Matteo (2,1-12).`}]}},
+{n:21,t:`La notte più lunga`,tema:`Solstizio d’inverno: il buio e chi porta luce`,parola:[`«Il popolo che camminava nelle tenebre ha visto una grande luce»`,`Isaia 9,1`],tempo:`20 min`,
+ att:`Oggi è la notte più lunga dell’anno. Luci spente, una sola candela accesa. Ognuno scrive su un foglio nero con un gessetto bianco «una notte» (una paura, un dispiacere) e poi, sul retro bianco, «una luce» (una persona, un gesto). Si legge qualche frase volontaria. Il buio non viene negato, viene attraversato.`,
+ x:{k:"video",desc:`Testimonianze brevi di giovani che hanno attraversato un periodo buio (lutto, malattia, fragilità, bullismo) e raccontano che cosa o chi li ha aiutati. Preferibili voci di adolescenti o giovani adulti, con messaggio di speranza e senza dettagli pesanti.`,cerca:[`adolescente racconta come ha superato un momento difficile testimonianza di fede`,`giovani fede e speranza testimonianza`,`ragazzi contro il bullismo testimonianza`],nota:`Preparati a un clima di ascolto: qualcuno potrebbe aprirsi. Si ascolta senza giudicare e si ricorda che si può sempre parlare con un adulto di fiducia.`}},
+{n:22,t:`Non temete`,tema:`Angeli, pastori e paure`,parola:[`«Non temete: ecco, vi annuncio una grande gioia»`,`Luca 2,10`],tempo:`20 min`,
+ att:`Gli angeli dicono «non temere» a Maria, a Giuseppe e ai pastori. Ognuno scrive in forma anonima una paura (la verifica, il giudizio degli altri, il buio, il futuro) e la mette in una scatola; poi se ne pescano alcune e la classe prova a rispondere con un «non temere» scritto, vero e concreto.`,
+ x:{k:"song",artista:`Ultimo`,titolo:`Il ballo delle incertezze`,spunto:`Un brano sulle paure e sulle incertezze di chi cresce. Ascolta e segna la frase che ti sembra più sincera.`,dom:`Che cosa rende una paura più piccola: il coraggio, la compagnia o la speranza?`}},
+{n:23,t:`Pastori e Magi`,tema:`Chi arriva alla grotta e con quali doni`,parola:[`«Vedendo la stella, provarono una gioia grandissima»`,`Matteo 2,10`],tempo:`25 min`,
+ att:`Si confrontano i due gruppi che arrivano da Gesù: i pastori (gente semplice, vicini) e i Magi (sapienti, lontani). Poi si prepara il «dono dei Magi» della classe: non oro, incenso e mirra, ma qualità o gesti da regalare (tempo, ascolto, perdono). Ognuno li scrive su un biglietto da consegnare a Natale.`,
+ x:{k:"game",type:"quiz",titolo:`Quiz finale`,items:[
+  {q:`Chi riceve per primo l’annuncio della nascita di Gesù?`,o:[`I Magi`,`I pastori`,`Erode`,`I sacerdoti`],a:1,w:`I pastori, gente semplice, ricevono l’annuncio dall’angelo.`},
+  {q:`Quale di questi doni NON è portato dai Magi?`,o:[`Oro`,`Incenso`,`Mirra`,`Argento`],a:3,w:`Portano oro, incenso e mirra.`},
+  {q:`Che cosa dice l’angelo ai pastori?`,o:[`«Non temete, vi annuncio una grande gioia»`,`«Tornate a casa»`,`«Preparate le armi»`,`«Restate in silenzio»`],a:0,w:`Luca 2,10: la gioia è per tutto il popolo.`}]}},
+{n:24,t:`Il regalo più grande`,tema:`Vigilia di Natale`,parola:[`«Il Verbo si fece carne e venne ad abitare in mezzo a noi»`,`Giovanni 1,14`],tempo:`30 min`,
+ att:`Ultima candela. Si legge il racconto di Luca 2,1-14. Ognuno scrive un biglietto a una persona e un altro a Gesù: che cosa vuole ringraziare, chiedere, promettere. Ci si scambiano gli auguri e si ripercorre il calendario: la classe sceglie la candela che le è piaciuta di più e dice perché.`,
+ x:{k:"video",desc:`Testimonianze di giovani sulla gioia del Natale vissuto in modo semplice, in missione o in servizio, oppure giovani che raccontano un Natale diverso. Come bonus, ascolta «Il regalo più grande» di Tiziano Ferro (testo da verificare prima).`,cerca:[`Natale dei giovani testimonianza missione`,`Tiziano Ferro Il regalo più grande`,`giovani Giubileo 2025 che cosa mi è rimasto testimonianza`],nota:`Chiedi alla classe: che cosa ti porti via di questo Avvento?`}}
+];
+
+const WEEKS = [
+  {t:`Prima settimana · Attesa e vigilanza`,s:`1–5 dicembre`,from:1,to:5},
+  {t:`Prima e seconda settimana · Preparare la via`,s:`6–12 dicembre`,from:6,to:12},
+  {t:`Terza settimana · Gioia e luce`,s:`13–19 dicembre`,from:13,to:19},
+  {t:`Quarta settimana · Verso la grotta`,s:`20–24 dicembre`,from:20,to:24}
+];
+
+const KIND = {song:{n:"Canzone",c:"var(--song)",i:"♪"},video:{n:"Video con testimoni",c:"var(--video)",i:"▶"},game:{n:"Gioco interattivo",c:"var(--game)",i:"✦"}};
+
+let lit = new Set();
+try{ const s = localStorage.getItem("avvento-prima-media"); if(s) lit = new Set(JSON.parse(s)); }catch(e){}
+function save(){ try{ localStorage.setItem("avvento-prima-media", JSON.stringify([...lit])); }catch(e){} }
+
+const $ = s => document.querySelector(s);
+const weeksEl = $("#weeks");
+function buildWeeks(){
+  weeksEl.innerHTML = "";
+  WEEKS.forEach(w=>{
+    const sec = document.createElement("section"); sec.className="week";
+    sec.innerHTML = `<h2>${w.t}</h2><p class="sub">${w.s}</p>`;
+    const shelf = document.createElement("div"); shelf.className="shelf";
+    D.filter(d=>d.n>=w.from && d.n<=w.to).forEach(d=>{
+      const b = document.createElement("button");
+      b.type="button"; b.className="candle"+(d.rose?" rose":"")+(lit.has(d.n)?" lit":"");
+      b.dataset.n=d.n;
+      b.setAttribute("aria-label",`Giorno ${d.n}: ${d.t}. ${KIND[d.x.k].n}`);
+      const h = 70 + ((d.n*37)%5)*9;
+      b.innerHTML = `<div class="flame"></div><div class="wick"></div><div class="wax" style="height:${h}px">${d.n}<small style="color:#fff" aria-hidden="true">${KIND[d.x.k].i}</small></div>`;
+      b.addEventListener("click",()=>openDay(d.n));
+      shelf.appendChild(b);
+    });
+    sec.appendChild(shelf); weeksEl.appendChild(sec);
+  });
+  $("#prog").textContent = `Candele accese: ${lit.size} su 24`;
+}
+
+const ov = $("#ov"), sheet = $("#sheet");
+let cur = 1, lastFocus = null;
+function esc(s){ return String(s).replace(/[&<>]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
+
+function openDay(n){
+  cur = n;
+  if(!ov.classList.contains("on")) lastFocus = document.activeElement;
+  const d = D[n-1];
+  lit.add(n); save();
+  const el = document.querySelector(`.candle[data-n="${n}"]`); if(el) el.classList.add("lit");
+  $("#prog").textContent = `Candele accese: ${lit.size} su 24`;
+  const x = d.x, kd = KIND[x.k];
+  sheet.innerHTML = `
+    <div class="top">
+      <div><div class="daynum">Giorno ${d.n} · dicembre · ${d.tempo}</div>
+      <h2 id="sTitle">${esc(d.t)}</h2><p class="theme">${esc(d.tema)}</p></div>
+      <button class="close" type="button" aria-label="Chiudi" id="cl">×</button>
+    </div>
+    <p class="word">${esc(d.parola[0])}<span>${esc(d.parola[1])}</span></p>
+    <div class="block"><h3>L’attività del giorno</h3><p>${esc(d.att)}</p></div>
+    <div class="extra ${x.k}" id="extra"><h3><span class="tag" style="color:${kd.c}"><span class="dot" style="background:${kd.c}"></span>${kd.n}</span></h3></div>
+    <div class="nav">
+      <button class="sec" type="button" id="pv" ${n===1?"disabled":""}>Giorno precedente</button>
+      <button type="button" id="nx" ${n===24?"disabled":""}>Giorno successivo</button>
+    </div>`;
+  const ex = $("#extra");
+  if(x.k==="song") renderSong(ex,x); else if(x.k==="video") renderVideo(ex,x); else renderGame(ex,x);
+  $("#cl").onclick = closeDay;
+  $("#pv").onclick = ()=>openDay(cur-1);
+  $("#nx").onclick = ()=>openDay(cur+1);
+  ov.classList.add("on"); sheet.scrollTop = 0; $("#cl").focus();
+  document.body.style.overflow = "hidden";
+}
+function closeDay(){ ov.classList.remove("on"); document.body.style.overflow=""; if(lastFocus&&lastFocus.focus) lastFocus.focus(); }
+ov.addEventListener("click",e=>{ if(e.target===ov) closeDay(); });
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"&&ov.classList.contains("on")) closeDay(); });
+
+function renderSong(ex,x){
+  ex.insertAdjacentHTML("beforeend",`
+    <p><strong>${esc(x.artista)}</strong>, «${esc(x.titolo)}»</p>
+    <p>${esc(x.spunto)}</p>
+    <p><strong>Domanda per la classe:</strong> ${esc(x.dom)}</p>
+    <a class="link" target="_blank" rel="noopener" href="${yt(x.artista+" "+x.titolo)}">Cerca il brano su YouTube</a>
+    <p class="meta">Controlla il testo prima dell’ascolto in classe.</p>`);
+}
+function renderVideo(ex,x){
+  ex.insertAdjacentHTML("beforeend",`
+    <p>${esc(x.desc)}</p>
+    <p>${x.cerca.map(c=>`<a class="link" target="_blank" rel="noopener" href="${yt(c)}">Cerca: ${esc(c)}</a>`).join("")}</p>
+    <p>${esc(x.nota)}</p>
+    <p class="meta">Guarda il video in anteprima prima di mostrarlo. I link aprono una ricerca, non un video fisso.</p>`);
+}
+function renderGame(ex,x){
+  ex.insertAdjacentHTML("beforeend",`<p><strong>${esc(x.titolo)}</strong></p>`);
+  const box = document.createElement("div"); ex.appendChild(box);
+  if(x.type==="quiz") quiz(box,x.items); else if(x.type==="tf") tf(box,x.items); else scr(box,x.items);
+}
+function quiz(box,items){
+  let score=0,done=0;
+  const sc = document.createElement("p"); sc.className="score";
+  items.forEach(it=>{
+    const q = document.createElement("div"); q.className="q";
+    q.innerHTML = `<p>${esc(it.q)}</p>`;
+    const o = document.createElement("div"); o.className="opts";
+    const why = document.createElement("p"); why.className="why"; why.textContent = it.w;
+    it.o.forEach((t,i)=>{
+      const b = document.createElement("button"); b.type="button"; b.className="opt"; b.textContent=t;
+      b.onclick=()=>{
+        o.querySelectorAll(".opt").forEach((x,j)=>{x.disabled=true; if(j===it.a) x.classList.add("right");});
+        if(i===it.a) score++; else b.classList.add("wrong");
+        why.classList.add("on"); done++;
+        if(done===items.length) sc.textContent = `Hai risposto bene a ${score} domande su ${items.length}.`;
+      };
+      o.appendChild(b);
+    });
+    q.appendChild(o); q.appendChild(why); box.appendChild(q);
+  });
+  box.appendChild(sc);
+}
+function tf(box,items){
+  let score=0,done=0;
+  const sc = document.createElement("p"); sc.className="score";
+  items.forEach(it=>{
+    const q = document.createElement("div"); q.className="q";
+    q.innerHTML = `<p>${esc(it.q)}</p>`;
+    const o = document.createElement("div"); o.className="opts"; o.style.gridTemplateColumns="1fr 1fr";
+    const why = document.createElement("p"); why.className="why"; why.textContent = it.w;
+    [[true,"Vero"],[false,"Falso"]].forEach(([v,t])=>{
+      const b = document.createElement("button"); b.type="button"; b.className="opt"; b.textContent=t; b.dataset.v=v;
+      b.onclick=()=>{
+        o.querySelectorAll(".opt").forEach(x=>{x.disabled=true; if((x.dataset.v==="true")===it.a) x.classList.add("right");});
+        if(v===it.a) score++; else b.classList.add("wrong");
+        why.classList.add("on"); done++;
+        if(done===items.length) sc.textContent = `Risposte giuste: ${score} su ${items.length}.`;
+      };
+      o.appendChild(b);
+    });
+    q.appendChild(o); q.appendChild(why); box.appendChild(q);
+  });
+  box.appendChild(sc);
+}
+function shuffle(w){
+  const a = w.split(""); let r = w;
+  for(let t=0;t<20 && r===w;t++){ for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} r=a.join(""); }
+  return r;
+}
+function scr(box,items){
+  items.forEach(it=>{
+    const q = document.createElement("div"); q.className="q";
+    const tiles = shuffle(it.w).split("").map(c=>`<span class="tile">${c}</span>`).join("");
+    q.innerHTML = `<div class="tiles" aria-label="Lettere in disordine">${tiles}</div><p class="meta" style="font-weight:400">Indizio: ${esc(it.h)}</p>`;
+    const row = document.createElement("div"); row.className="scr";
+    const inp = document.createElement("input"); inp.type="text"; inp.autocomplete="off"; inp.setAttribute("aria-label","La tua risposta");
+    const btn = document.createElement("button"); btn.type="button"; btn.textContent="Controlla";
+    const fb = document.createElement("span"); fb.className="fb"; fb.setAttribute("aria-live","polite");
+    const check = ()=>{
+      if(inp.value.trim().toUpperCase()===it.w){ fb.textContent=`Giusto: ${it.w}!`; fb.className="fb ok"; inp.disabled=true; btn.disabled=true; }
+      else { fb.textContent="Riprova."; fb.className="fb ko"; }
+    };
+    btn.onclick=check; inp.addEventListener("keydown",e=>{ if(e.key==="Enter") check(); });
+    row.append(inp,btn,fb); q.appendChild(row); box.appendChild(q);
+  });
+}
+
+$("#resetBtn").onclick = ()=>{ lit = new Set(); save(); buildWeeks(); };
+$("#themeBtn").onclick = ()=>{
+  const r = document.documentElement;
+  const dark = getComputedStyle(r).colorScheme.includes("dark");
+  r.setAttribute("data-theme", dark ? "light" : "dark");
+};
+
+buildWeeks();
+</script>
+</body>
+</html>
